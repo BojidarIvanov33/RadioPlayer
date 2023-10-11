@@ -1,6 +1,8 @@
 package com.example.radioplayer
 
 import android.annotation.SuppressLint
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -43,11 +45,20 @@ var label:TextView?=null
 
 
 class MainActivity : AppCompatActivity() {
+     var bluetoothAdapter:BluetoothAdapter?=null
+    lateinit var pairedDevice: Set<BluetoothDevice>
+    val request_enable_bluetooth=1
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         label=findViewById(R.id.onPlay)
+
+bluetoothAdapter= BluetoothAdapter.getDefaultAdapter()
+        if(!bluetoothAdapter!!.isEnabled){
+            label?.text="Turn on Bluetooth"
+        }
         fun radioOn (url:String){
             mediaPlayer?.release()
             mediaPlayer=null

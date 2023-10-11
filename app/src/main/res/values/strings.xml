@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">RadioPlayer</string>
+    <string name="app_name" >Online Radio Player</string>
+
 </resources>

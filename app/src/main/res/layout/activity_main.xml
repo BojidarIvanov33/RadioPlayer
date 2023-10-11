@@ -57,9 +57,10 @@
             android:layout_height="90dp" android:id="@+id/btn_rapmixxx_play"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_energyN_play" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="5dp"
-            app:layout_constraintTop_toBottomOf="@+id/btn_FMplus_play" android:layout_marginTop="1dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/btn_FMplus_play" android:layout_marginTop="1dp"
+            app:layout_constraintStart_toEndOf="@+id/btn_miami_play"/>
     <Button
             android:text="Radio Energy"
             android:layout_width="190dp"
@@ -75,9 +76,10 @@
             android:layout_height="90dp" android:id="@+id/btn_miami_play"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/btn_FMplus_play" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="5dp"
-            app:layout_constraintTop_toBottomOf="@+id/btn_energyN_play" android:layout_marginTop="1dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/btn_energyN_play" android:layout_marginTop="1dp"
+            app:layout_constraintEnd_toStartOf="@+id/btn_rapmixxx_play"/>
     <Button
             android:text="Radio Avto"
             android:layout_width="190dp"
