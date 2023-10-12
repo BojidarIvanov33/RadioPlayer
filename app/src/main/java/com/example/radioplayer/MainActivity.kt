@@ -2,7 +2,7 @@ package com.example.radioplayer
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
+import android.content.BroadcastReceiver
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -10,61 +10,58 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
-
-val radiooneUrl:String="http://stream.radioreklama.bg/radio1rock128"
-val radiooneN:String="http://stream.radioreklama.bg/radio1128"
-val radioCity:String="http://stream.radioreklama.bg/city128"
-val radioEnergy90:String="http://stream.radioreklama.bg/energy-90s"
-val radioEnjoy:String="http://stream.radioreklama.bg/nrj128"
-val radioEnergyN:String="http://stream.radioreklama.bg/nrj128"
-val radioVeronika:String="http://stream.radioreklama.bg/veronika128"
-val radioAvto:String="http://play.global.audio/avtoradio.mp3"
-val radioFMplus:String="http://radio.freeplace.info:8000/FMPlus.mp3"
-val radioAmg:String="http://stream.lolliradio.net/lolli_hits.mp3"
-val radioMelody:String="http://193.108.24.6:8000/melody?file=.mp3"
-val radioNjoy:String="https://web.static.btv.bg/radio/njoy-radio-proxy/index.php"
-val radioMiami:String="https://streaming.radiostreamlive.com/miamibeachradio_devices"
-val radioRapMixxx:String= "http://ais-sa2.cdnstream1.com/1988_128.mp3"
-val freshUrl:String="http://193.108.24.21:8000/fresh?file=.mp3 "
-var mediaPlayer:MediaPlayer?=null
-var btnRadOne:Button?=null
-var btnFresh:Button?=null
-var btnCity:Button?=null
-var btnEnergy:Button?=null
-var btnVeronika:Button?=null
-var btnAMG:Button?=null
-var btnAvto:Button?=null
-var btnOneN:Button?=null
-var btnEnergyN:Button?=null
-var btnFMplus:Button?=null
-var btnMelody:Button?=null
-var btnNjoy:Button?=null
-var btnMiami:Button?=null
-var btnRapMixxx:Button?=null
-var label:TextView?=null
-
-
 class MainActivity : AppCompatActivity() {
-     var bluetoothAdapter:BluetoothAdapter?=null
-    lateinit var pairedDevice: Set<BluetoothDevice>
-    val request_enable_bluetooth=1
-
+    private val radiooneUrl:String="http://stream.radioreklama.bg/radio1rock128"
+    private val radiooneN:String="http://stream.radioreklama.bg/radio1128"
+    private val radioCity:String="http://stream.radioreklama.bg/city128"
+    private val radioEnergy90:String="http://stream.radioreklama.bg/energy-90s"
+    private val radioEnjoy:String="http://stream.radioreklama.bg/nrj128"
+    private val radioEnergyN:String="http://stream.radioreklama.bg/nrj128"
+    private val radioVeronika:String="http://stream.radioreklama.bg/veronika128"
+    private  val radioAvto:String="http://play.global.audio/avtoradio.mp3"
+    private val radioFMplus:String="http://radio.freeplace.info:8000/FMPlus.mp3"
+    private  val radioAmg:String="http://stream.lolliradio.net/lolli_hits.mp3"
+    private val radioMelody:String="http://193.108.24.6:8000/melody?file=.mp3"
+    private  val radioNjoy:String="https://web.static.btv.bg/radio/njoy-radio-proxy/index.php"
+    private val radioMiami:String="https://streaming.radiostreamlive.com/miamibeachradio_devices"
+    private val radioRapMixxx:String= "http://ais-sa2.cdnstream1.com/1988_128.mp3"
+    private  val freshUrl:String="http://193.108.24.21:8000/fresh?file=.mp3 "
+    private var mediaPlayer:MediaPlayer?=null
+    private  var btnRadOne:Button?=null
+    private var btnFresh:Button?=null
+    private var btnCity:Button?=null
+    private var btnEnergy:Button?=null
+    private var btnVeronika:Button?=null
+    private var btnAMG:Button?=null
+    private var btnAvto:Button?=null
+    private  var btnOneN:Button?=null
+    private  var btnEnergyN:Button?=null
+    private var btnFMplus:Button?=null
+    private var btnMelody:Button?=null
+    private var btnNjoy:Button?=null
+    private var btnMiami:Button?=null
+    private var btnRapMixxx:Button?=null
+    private  var label:TextView?=null
+    private var bluetoothAdapter:BluetoothAdapter?=null
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         label=findViewById(R.id.onPlay)
-
 bluetoothAdapter= BluetoothAdapter.getDefaultAdapter()
         if(!bluetoothAdapter!!.isEnabled){
             label?.text="Turn on Bluetooth"
         }
-        fun radioOn (url:String){
+
+     fun  radioOn   (url:String){
             mediaPlayer?.release()
             mediaPlayer=null
+            mediaPlayer?.prepareAsync()
             mediaPlayer=MediaPlayer.create(this@MainActivity, Uri.parse(url))
+
             mediaPlayer?.start()
         }
+
 
         btnRadOne=findViewById(R.id.btn_one_play)
         btnRadOne?.setOnClickListener {
@@ -137,4 +134,6 @@ bluetoothAdapter= BluetoothAdapter.getDefaultAdapter()
             label?.text="Now playing: Radio Rap Mixxx"
         }
     }
+
+
 }
