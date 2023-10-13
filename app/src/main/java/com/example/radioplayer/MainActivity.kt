@@ -2,15 +2,17 @@ package com.example.radioplayer
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
-import android.content.BroadcastReceiver
 import android.media.MediaPlayer
+import android.media.MediaPlayer.OnErrorListener
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), OnErrorListener {
     private val radiooneUrl:String="http://stream.radioreklama.bg/radio1rock128"
     private val radiooneN:String="http://stream.radioreklama.bg/radio1128"
     private val radioCity:String="http://stream.radioreklama.bg/city128"
@@ -43,34 +45,36 @@ class MainActivity : AppCompatActivity() {
     private var btnRapMixxx:Button?=null
     private  var label:TextView?=null
     private var bluetoothAdapter:BluetoothAdapter?=null
+    private var lastUrl: String? =null
+    var Tag="Main Activity"
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(Tag,"app start here-------------")
+
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         label=findViewById(R.id.onPlay)
+        mediaPlayer?.prepareAsync()
 bluetoothAdapter= BluetoothAdapter.getDefaultAdapter()
         if(!bluetoothAdapter!!.isEnabled){
             label?.text="Turn on Bluetooth"
         }
 
-     fun  radioOn   (url:String){
-            mediaPlayer?.release()
-            mediaPlayer=null
-            mediaPlayer?.prepareAsync()
-            mediaPlayer=MediaPlayer.create(this@MainActivity, Uri.parse(url))
-
-            mediaPlayer?.start()
-        }
 
 
         btnRadOne=findViewById(R.id.btn_one_play)
         btnRadOne?.setOnClickListener {
+            lastUrl=radiooneUrl
                 radioOn(radiooneUrl)
             label?.text="Now playing: Radio 1 Rock"
         }
 
         btnFresh=findViewById(R.id.btn_fresh_play)
         btnFresh?.setOnClickListener {
+            lastUrl=freshUrl
             radioOn(freshUrl)
             label?.text="Now playing: Radio Fresh"
                   }
@@ -80,60 +84,85 @@ bluetoothAdapter= BluetoothAdapter.getDefaultAdapter()
         }
         btnCity=findViewById(R.id.btn_city_play)
         btnCity?.setOnClickListener {
+            lastUrl=radioCity
             radioOn(radioCity)
             label?.text="Now playing: Radio City"
         }
         btnVeronika=findViewById(R.id.btn_veronika_play)
         btnVeronika?.setOnClickListener {
+            lastUrl=radioVeronika
             radioOn(radioVeronika)
             label?.text="Now playing: Radio Veronika"
         }
         btnAMG=findViewById(R.id.btn_amg_play)
         btnAMG?.setOnClickListener {
+            lastUrl=radioAmg
             radioOn(radioAmg)
             label?.text="Now playing: Radio Italia .?"
         }
         btnAvto=findViewById(R.id.btn_avto_play)
         btnAvto?.setOnClickListener {
+            lastUrl=radioAvto
             radioOn(radioAvto)
             label?.text="Now playing: Avto Radio"
         }
         btnOneN=findViewById(R.id.btn_oneN_play)
         btnOneN?.setOnClickListener {
+            lastUrl=radiooneN
             radioOn(radiooneN)
             label?.text="Now playing: Radio 1 "
         }
         btnEnergyN=findViewById(R.id.btn_energyN_play)
         btnEnergyN?.setOnClickListener {
+            lastUrl=radioEnergyN
             radioOn(radioEnergyN)
             label?.text="Now playing: Radio Energy"
         }
         btnFMplus=findViewById(R.id.btn_FMplus_play)
         btnFMplus?.setOnClickListener {
+            lastUrl=radioFMplus
             radioOn(radioFMplus)
             label?.text="Now playing: Radio FM +"
         }
         btnMelody=findViewById(R.id.btn_melody_play)
         btnMelody?.setOnClickListener {
+            lastUrl=radioMelody
             radioOn(radioMelody)
             label?.text="Now playing: Radio Melody"
         }
         btnNjoy=findViewById(R.id.btn_njoy_play)
         btnNjoy?.setOnClickListener {
+            lastUrl=radioNjoy
             radioOn(radioNjoy)
             label?.text="Now playing: Radio Njoy"
         }
         btnMiami=findViewById(R.id.btn_miami_play)
         btnMiami?.setOnClickListener {
+            lastUrl=radioMiami
             radioOn(radioMiami)
             label?.text="Now playing: Radio Miami beach"
         }
         btnRapMixxx=findViewById(R.id.btn_rapmixxx_play)
         btnRapMixxx?.setOnClickListener {
+            lastUrl=radioRapMixxx
             radioOn(radioRapMixxx)
             label?.text="Now playing: Radio Rap Mixxx"
         }
+
     }
 
+    fun  radioOn  (url:String){
+            mediaPlayer?.reset()
+            mediaPlayer?.release()
+            mediaPlayer = MediaPlayer.create(this@MainActivity, Uri.parse(url))
+            mediaPlayer?.start()
+            mediaPlayer?.setOnErrorListener(this)
+    }
+    override fun onError(p0: MediaPlayer?, p1: Int, p2: Int): Boolean {
+        radioOn(lastUrl!!)
+//        Handler().postDelayed({ radioOn(lastUrl!!) },1000)
+        return true
+    }
 
 }
+
