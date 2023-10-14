@@ -2,22 +2,22 @@ package com.example.radioplayer
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
+import android.content.IntentFilter
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnErrorListener
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-
+public  var mediaPlayer: MediaPlayer? =null
+public  var label:TextView?=null
 
 class MainActivity : AppCompatActivity(), OnErrorListener {
     private val radiooneUrl:String="http://stream.radioreklama.bg/radio1rock128"
     private val radiooneN:String="http://stream.radioreklama.bg/radio1128"
     private val radioCity:String="http://stream.radioreklama.bg/city128"
     private val radioEnergy90:String="http://stream.radioreklama.bg/energy-90s"
-    private val radioEnjoy:String="http://stream.radioreklama.bg/nrj128"
     private val radioEnergyN:String="http://stream.radioreklama.bg/nrj128"
     private val radioVeronika:String="http://stream.radioreklama.bg/veronika128"
     private  val radioAvto:String="http://play.global.audio/avtoradio.mp3"
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), OnErrorListener {
     private val radioMiami:String="https://streaming.radiostreamlive.com/miamibeachradio_devices"
     private val radioRapMixxx:String= "http://ais-sa2.cdnstream1.com/1988_128.mp3"
     private  val freshUrl:String="http://193.108.24.21:8000/fresh?file=.mp3 "
-    private var mediaPlayer:MediaPlayer?=null
+
     private  var btnRadOne:Button?=null
     private var btnFresh:Button?=null
     private var btnCity:Button?=null
@@ -43,27 +43,20 @@ class MainActivity : AppCompatActivity(), OnErrorListener {
     private var btnNjoy:Button?=null
     private var btnMiami:Button?=null
     private var btnRapMixxx:Button?=null
-    private  var label:TextView?=null
-    private var bluetoothAdapter:BluetoothAdapter?=null
     private var lastUrl: String? =null
-    var Tag="Main Activity"
-
-    @SuppressLint("MissingInflatedId")
+    lateinit var reciever:BroadcastReceiver
+//    var Tag="Main Activity"
+    @SuppressLint("MissingInflatedId", "SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(Tag,"app start here-------------")
-
-
+//        Log.d(Tag,"app start here-------------")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         label=findViewById(R.id.onPlay)
         mediaPlayer?.prepareAsync()
-bluetoothAdapter= BluetoothAdapter.getDefaultAdapter()
-        if(!bluetoothAdapter!!.isEnabled){
-            label?.text="Turn on Bluetooth"
-        }
-
-
+// Stop media when bluetooth disconnect
+        reciever= BroadcastReceiver()
+        IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED).also { registerReceiver(reciever,it) }
 
         btnRadOne=findViewById(R.id.btn_one_play)
         btnRadOne?.setOnClickListener {
@@ -163,6 +156,8 @@ bluetoothAdapter= BluetoothAdapter.getDefaultAdapter()
 //        Handler().postDelayed({ radioOn(lastUrl!!) },1000)
         return true
     }
+
+
 
 }
 
